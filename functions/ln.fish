@@ -19,7 +19,11 @@ function ln -d "Create symbolic links with relative paths"
   set -l target_dir $target
   test -d $target_dir || set target_dir (dirname $target_dir)
   for source in $argv
-    set -a sources (relpath $target_dir $source)
+    if set -q _flag_s
+      set -a sources (relpath $target_dir $source)
+    else
+      set -a sources $source
+    end
   end
   command ln $flags $sources $target
 end
